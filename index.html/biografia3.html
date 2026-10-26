@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIOGRAFIA | ROCKEY™</title>
+    <link rel="icon" type="image/png" href="rock.png">
+
+    <style>
+        /* VARIÁVEIS DE TEMA (ESCURO / CLARO) */
+        :root {
+            --bg-color: #101010;
+            --text-color: #ffffff;
+            --header-bg: #080814;
+            --text-muted: #cccccc;
+            --barra-even: white;
+            --card-bg: #f4f0ea;
+            --card-text: #101010;
+            --btn-bg: #101010;
+            --btn-color: #D3AF37;
+        }
+
+        body.light-theme {
+            --bg-color: #f2f2f2;
+            --text-color: #101010;
+            --header-bg: #e0e0e0;
+            --text-muted: #444444;
+            --barra-even: #101010;
+            --card-bg: #e0dcd5;
+            --card-text: #101010;
+            --btn-bg: #ffffff;
+            --btn-color: #b08d25;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .barra-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-color);
+        }
+
+        .barra-links a {
+            color: #D3AF37;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .barra-links a:nth-child(even) {
+            color: var(--barra-even);
+        }
+
+        .barra-links a:hover,
+        #menuLateral a:hover {
+            text-decoration: underline;
+        }
+
+        .cabecalho {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 90px;
+            padding: 18px 75px;
+            background: var(--header-bg);
+            border-bottom: 3px solid #D3AF37;
+        }
+
+        .cabecalho h1 {
+            margin: 0;
+            color: #D3AF37;
+            text-align: center;
+            font-size: 32px;
+        }
+
+        .botao-menu {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .barra-busca {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .barra-busca input {
+            width: 190px;
+            min-width: 0;
+            padding: 9px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid #D3AF37;
+            border-radius: 5px;
+        }
+
+        .barra-busca button {
+            padding: 9px;
+            background: #D3AF37;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #menuLateral {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            max-width: 85%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px 15px;
+            background: white;
+            color: black;
+            text-align: center;
+            transition: left 0.4s ease;
+            z-index: 1200;
+        }
+
+        #menuLateral.aberto {
+            left: 0;
+        }
+
+        .botao-fechar {
+            float: right;
+            width: auto;
+            padding: 5px 10px;
+            background: #101010;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        #menuLateral h2 {
+            margin-top: 35px;
+        }
+
+        #menuLateral a {
+            display: inline-block;
+            margin: 5px 0;
+            color: #101010;
+        }
+
+        .aviso {
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .assinatura {
+            text-align: left;
+        }
+
+        /* Container de botões no topo */
+        .container-acoes-topo {
+            position: absolute;
+            top: 145px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .botao-feedback {
+            padding: 10px 16px;
+            background: var(--btn-bg);
+            color: var(--btn-color);
+            border: 1px solid #D3AF37;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            line-height: 1;
+            transition: all 0.2s ease;
+            height: 42px;
+        }
+
+        .botao-feedback:hover {
+            background: #D3AF37;
+            color: black;
+        }
+
+        /* TOGGLE CUSTOMIZADO PARA ALTERNAR TEMA */
+        .toggle-cont {
+            --primary: #54a8fc;
+            --light: #d9d9d9;
+            --dark: #121212;
+            --gray: #414344;
+
+            position: relative;
+            z-index: 10;
+            width: fit-content;
+            height: 42px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            container-type: style;
+        }
+
+        .toggle-cont .toggle-input {
+            display: none;
+        }
+
+        .toggle-cont .toggle-label {
+            --gap: 5px;
+            --width: 32px;
+
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            width: calc((var(--width) + var(--gap)) * 2);
+            height: 100%;
+            background-color: var(--dark);
+            border: 1px solid #777777;
+            border-bottom: 0;
+            border-radius: 9999px;
+            box-sizing: border-box;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .toggle-label::before {
+            content: "";
+            position: absolute;
+            z-index: -10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(100% + 0.6rem);
+            height: calc(100% + 0.6rem);
+            background-color: var(--gray);
+            border: 1px solid #777777;
+            border-bottom: 0;
+            border-radius: 9999px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .toggle-label::after {
+            content: "";
+            position: absolute;
+            z-index: -10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(
+                circle at 50% -100%,
+                rgb(58, 155, 252) 0%,
+                rgba(12, 12, 12, 1) 80%
+            );
+            border-radius: 9999px;
+        }
+
+        .toggle-cont .toggle-label .cont-icon {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: var(--width);
+            height: var(--width);
+            background-image: radial-gradient(
+                circle at 50% 0%,
+                #666666 0%,
+                var(--gray) 100%
+            );
+            border: 1px solid #aaaaaa;
+            border-bottom: 0;
+            border-radius: 9999px;
+            box-shadow: inset 0 -0.15rem 0.15rem var(--primary);
+            transition: transform 0.3s ease-in-out;
+            overflow: clip;
+        }
+
+        .cont-icon .sparkle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: block;
+            width: calc(var(--width) * 1px);
+            aspect-ratio: 1;
+            background-color: var(--light);
+            border-radius: 50%;
+            transform-origin: 50% 50%;
+            transform: translate(-50%, -50%);
+            animation: sparkle calc(100s / var(--duration, 1)) linear calc(0s / var(--duration, 1)) infinite;
+        }
+
+        @keyframes sparkle {
+            to {
+                width: calc(var(--width) * 0.5px);
+                transform: translate(2000%, -50%);
+            }
+        }
+
+        .cont-icon .icon {
+            width: 0.9rem;
+            fill: var(--light);
+        }
+
+        .toggle-cont:has(.toggle-input:checked) {
+            --checked: true;
+        }
+
+        .toggle-cont .toggle-input:checked + .toggle-label {
+            background-color: #41434400;
+            border: 1px solid #3d6970;
+            border-bottom: 0;
+        }
+
+        .toggle-cont .toggle-input:checked + .toggle-label::before {
+            box-shadow: 0 0.5rem 1.5rem -1rem #0080ff;
+        }
+
+        .toggle-cont .toggle-input:checked + .toggle-label .cont-icon {
+            overflow: visible;
+            background-image: radial-gradient(
+                circle at 50% 0%,
+                #045ab1 0%,
+                var(--primary) 100%
+            );
+            border: 1px solid var(--primary);
+            border-bottom: 0;
+            transform: translateX(calc((var(--gap) * 1) + 100%)) rotate(-225deg);
+        }
+
+        .toggle-cont .toggle-input:checked + .toggle-label .cont-icon .sparkle {
+            z-index: -10;
+            width: calc(var(--width) * 1.5px);
+            background-color: #acacac;
+            animation: sparkle2 calc(100s / var(--duration, 1)) linear calc(10s / var(--duration, 1)) infinite;
+        }
+
+        @keyframes sparkle2 {
+            to {
+                width: calc(var(--width) * 1px);
+                transform: translate(5000%, -50%);
+            }
+        }
+
+        /* SEÇÃO DE TOPO / TÍTULO PRINCIPAL */
+        .secao-topo {
+            text-align: center;
+            padding: 50px 20px 20px 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .subtitulo-topo {
+            display: block;
+            color: #D3AF37;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .titulo-marca {
+            margin: 0;
+            color: #D3AF37;
+            font-size: 52px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .turma {
+            display: block;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            margin-top: 10px;
+        }
+
+        /* ESTILO LINHA DO TEMPO / SEQUÊNCIA */
+        .linha-tempo {
+            position: relative;
+            max-width: 900px;
+            margin: 40px auto;
+            padding-left: 50px;
+        }
+
+        .linha-tempo::before {
+            content: '';
+            position: absolute;
+            left: 20px; 
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background-color: #D3AF37; 
+            z-index: 1;
+        }
+
+        .item-timeline {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 60px;
+        }
+
+        .circulo-numero {
+            position: absolute;
+            left: -50px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--bg-color);
+            border: 2px solid #D3AF37; 
+            border-radius: 50%;
+            color: #D3AF37;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .conteudo-timeline {
+            padding-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .polaroid {
+            background: var(--card-bg);
+            padding: 10px 10px 25px 10px;
+            width: 220px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-align: center;
+            color: var(--card-text);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 13px;
+            transform: rotate(-2deg);
+            flex-shrink: 0;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .texto-bloco {
+            max-width: 450px;
+            text-align: left;
+        }
+
+        .texto-bloco h3 {
+            color: #D3AF37;
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-family: Arial, sans-serif;
+        }
+
+        .texto-bloco p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.5;
+            font-family: Arial, sans-serif;
+        }
+
+        /* FOTO DA EQUIPE NO FINAL (CENTRALIZADA EMBAIXO) */
+        .secao-equipe-final {
+            max-width: 800px;
+            margin: 60px auto 80px auto;
+            text-align: center;
+            padding: 20px;
+            background: var(--bg-color);
+        }
+
+        .polaroid-equipe {
+            background: var(--card-bg);
+            padding: 15px 15px 30px 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .polaroid-equipe img {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            max-height: 420px;
+            object-fit: cover;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .legenda-equipe {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 24px;
+            color: var(--card-text);
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="barra-links">
+        <a href="rockandkey.html">Início</a>
+        <a href="https://rollingstone.com.br/musica/rock-progressivo-origens-bandas/">Rock Progressivo</a>
+        <a href="https://www.instagram.com/cafecombaseado/">Café Com Baseado</a>
+        <a href="https://www.masterclass.com/articles/classic-rock-guide">Rock Clássico</a>
+        <a href="https://www.teclacenter.com.br/blog/o-que-e-indie-rock-descubra-de-uma-vez-por-todas/">Rock Indie</a>
+        <a href="https://open.spotify.com/intl-pt/album/3b4E89rxzZQ9zkhgKpj8N4">Álbum do mês</a>
+        <a href="https://www.youtube.com/watch?v=-0MQXbcw-co&list=RD-0MQXbcw-co&start_radio=1">Música do mês</a>
+    </nav>
+
+    <header class="cabecalho">
+        <button type="button" class="botao-menu" onclick="abrirMenu()" aria-label="Abrir menu">☰</button>
+        <h1>ROCKEY™</h1>
+        <form class="barra-busca" action="https://www.google.com/search" method="get" target="_blank">
+            <input type="search" name="q" placeholder="Buscar bandas e álbuns..." aria-label="Buscar no Google" required>
+            <button type="submit">Buscar 🔎</button>
+        </form>
+    </header>
+
+    <div class="container-acoes-topo">
+        <a href="
+http://localhost/M%C3%BAsicas%20e%20Rock/rockandkey.html/index.html" class="botao-feedback">
+            🏠 Voltar ao Início
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeGOqwAeT_i1AABECLaKJE3K1WbbPrRdON3bOhBpo1xzXC16A/viewform?usp=publish-editor" target="_blank" class="botao-feedback">
+            💬 Deixar Feedback!!
+        </a>
+
+        <!-- TOGGLE CUSTOMIZADO PARA ALTERNAR TEMA -->
+        <div class="toggle-cont">
+            <input class="toggle-input" id="toggleTema" type="checkbox" onchange="alternarTema()">
+            <label class="toggle-label" for="toggleTema">
+                <div class="cont-icon">
+                    <span class="sparkle" style="--deg: 45; --duration: 2;"></span>
+                    <span class="sparkle" style="--deg: 135; --duration: 1.5;"></span>
+                    <span class="sparkle" style="--deg: 225; --duration: 2.5;"></span>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+                    </svg>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <!-- SEÇÃO DO TOPO COM O TÍTULO SOLICITADO -->
+    <section class="secao-topo">
+        <span class="subtitulo-topo">CONHEÇA OS CRIADORES</span>
+        <h2 class="titulo-marca">BIOGRAFIA</h2>
+        <span class="turma">TURMA 301 INFORMÁTICA • HAYDÉE 2026</span>
+    </section>
+
+    <!-- SEQUÊNCIA DAS 6 PESSOAS NO ESTILO TIMELINE DA PÁGINA PRINCIPAL -->
+    <div class="linha-tempo">
+        
+        <!-- INTEGRANTE 01 -->
+        <div class="item-timeline">
+            <div class="circulo-numero">01</div>
+            <div class="conteudo-timeline">
+                <div class="polaroid">
+                    <img src="integrantes/kaka (4).jpg">
+                  André
+                </div>
+                <div class="texto-bloco">
+                    <h3>ANDRÉ</h3>
+                    <p>Atuou no desenvolvimento e na montagem física dos circuitos dos pedais analógicos de Fuzz e Reverb.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTEGRANTE 02 -->
+        <div class="item-timeline">
+            <div class="circulo-numero">02</div>
+            <div class="conteudo-timeline">
+                <div class="polaroid">
+                    <img src="integrantes/dada.jpg" alt="Foto do Daniel">
+                    Daniel
+                </div>
+                <div class="texto-bloco">
+                    <h3>DANIEL</h3>
+                    <p>Focado na engenharia de áudio e na calibração do som nos testes com instrumentos e o desenvolvimento dos equipamentos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTEGRANTE 03 -->
+        <div class="item-timeline">
+            <div class="circulo-numero">03</div>
+            <div class="conteudo-timeline">
+                <div class="polaroid">
+                    <img src="integrantes/kaka (1).jpg" alt="Foto do Khauan">
+                    Khauan
+                </div>
+                <div class="texto-bloco">
+                    <h3>KHAUAN</h3>
+                    <p>Responsável pelo controle de qualidade e testes do sinal sonoro no pedal Fuzz Face, além de ser responsável pela pesquisa teórica e pela documentação do projeto do grupo, além de ser o responsável pela 
+                        produção do ambiete que será exposto..</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTEGRANTE 04 -->
+        <div class="item-timeline">
+            <div class="circulo-numero">04</div>
+            <div class="conteudo-timeline">
+                <div class="polaroid">
+                    <img src="integrantes/papa.jpg" alt="Foto do Ryan Paiva">
+                    Ryan Paiva
+                </div>
+                <div class="texto-bloco">
+                    <h3>RYAN PAIVA</h3>
+                    <p>Cuidou da estrutura do hardware, conexões dos jack P10 e caixas dos pedais, alem de auxiliar 
+                        a criação do site.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTEGRANTE 05 -->
+        <div class="item-timeline">
+            <div class="circulo-numero">05</div>
+            <div class="conteudo-timeline">
+                <div class="polaroid">
+                    <img src="integrantes/sasa.jpg" alt="Foto do Samuel Martins">
+                    Samuel Martins
+                </div>
+                <div class="texto-bloco">
+                    <h3>SAMUEL MARTINS</h3>
+                    <p>Responsável pela pesquisa teórica e pela documentação do projeto do grupo, além de ser o responsável pela 
+                        produção do ambiete que será exposto.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTEGRANTE 06 -->
+        <div class="item-timeline">
+            <div class="circulo-numero">06</div>
+            <div class="conteudo-timeline">
+                <div class="polaroid">
+                    <img src="integrantes/lulu.jpg" alt="Foto do Wender Lucas">
+                    Wender Lucas
+                </div>
+                <div class="texto-bloco">
+                    <h3>WENDER LUCAS</h3>
+                    <p>Idealizador do website, responsável pela programação e design da plataforma interativa e o guitarrista de testes
+                        dos equipamentos.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOTO CENTRALIZADA DA EQUIPE NO FINAL -->
+    <section class="secao-equipe-final">
+        <div class="polaroid-equipe">
+            <img src="integrantes/todos.jpg" alt="Foto da nossa equipe">
+            <p class="legenda-equipe">Nossa equipe!</p>
+        </div>
+    </section>
+
+    <!-- MENU LATERAL -->
+    <aside id="menuLateral">
+        <button type="button" class="botao-fechar" onclick="fecharMenu()" aria-label="Fechar menu">✕</button>
+        <h2>🏠 Menu do Site!</h2>
+        <hr>
+
+        <h3>☆ Sobre CB e Rock ☆</h3>
+        <a href="index.html">inicio aqui</a><br>
+        <a href="https://www.letras.mus.br/blog/tame-impala-biografia/">Conheça Tame Impala</a><br>
+        <a href="https://medium.com/@carmenliquor/nirvana-uma-breve-biografia-b27f681e24dc/">Conheça Nirvana</a><br>
+        <a href="https://www.acdc.com/">Conheça AC/DC ϟ</a><br>
+        <a href="https://www.letras.mus.br/blog/historia-pink-floyd/">Pink Floyd</a>
+
+        <h3>Recomendados</h3>
+        <a href="https://www.cifraclub.com.br/" style="color: orange;">Cifra Club</a><br>
+        <a href="https://www.letras.mus.br/" style="color: rgb(184, 187, 0);">Letras</a>
+
+        <h3>AVISO DO ADM.</h3>
+        <p class="aviso">
+            Página de biografia dos integrantes do projeto de Engenharia da Música.
+        </p>
+        <h6 class="assinatura">Por W E N D E R  L U C A S.</h6>
+    </aside>
+
+    <script>
+        function abrirMenu() {
+            document.getElementById("menuLateral").classList.add("aberto");
+        }
+
+        function fecharMenu() {
+            document.getElementById("menuLateral").classList.remove("aberto");
+        }
+
+        function alternarTema() {
+            document.body.classList.toggle("light-theme");
+        }
+    </script>
+</body>
+</html>

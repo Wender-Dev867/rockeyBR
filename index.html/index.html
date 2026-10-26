@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROCKEY™ | ENGENHARIA DA MÚSICA</title>
+    <link rel="icon" type="image/png" href="rock.png">
+
+    <style>
+       
+        :root {
+            --bg-color: #101010;
+            --text-color: #ffffff;
+            --header-bg: #080814;
+            --text-muted: #cccccc;
+            --barra-even: white;
+            --card-bg: #f4f0ea;
+            --card-text: #101010;
+            --btn-bg: #101010;
+            --btn-color: #D3AF37;
+        }
+
+        body.light-theme {
+            --bg-color: #f2f2f2;
+            --text-color: #101010;
+            --header-bg: #e0e0e0;
+            --text-muted: #444444;
+            --barra-even: #101010;
+            --card-bg: #e0dcd5;
+            --card-text: #101010;
+            --btn-bg: #ffffff;
+            --btn-color: #b08d25;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .barra-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-color);
+        }
+
+        .barra-links a {
+            color: #D3AF37;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .barra-links a:nth-child(even) {
+            color: var(--barra-even);
+        }
+
+        .barra-links a:hover,
+        #menuLateral a:hover {
+            text-decoration: underline;
+        }
+
+        .cabecalho {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 90px;
+            padding: 18px 75px;
+            background: var(--header-bg);
+            border-bottom: 3px solid #D3AF37;
+        }
+
+        .cabecalho h1 {
+            margin: 0;
+            color: #D3AF37;
+            text-align: center;
+            font-size: 32px;
+        }
+
+        .botao-menu {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .barra-busca {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .barra-busca input {
+            width: 190px;
+            min-width: 0;
+            padding: 9px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid #D3AF37;
+            border-radius: 5px;
+        }
+
+        .barra-busca button {
+            padding: 9px;
+            background: #D3AF37;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #menuLateral {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            max-width: 85%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px 15px;
+            background: white;
+            color: black;
+            text-align: center;
+            transition: left 0.4s ease;
+            z-index: 1200;
+        }
+
+        #menuLateral.aberto {
+            left: 0;
+        }
+
+        .botao-fechar {
+            float: right;
+            width: auto;
+            padding: 5px 10px;
+            background: #101010;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        #menuLateral h2 {
+            margin-top: 35px;
+        }
+
+        #menuLateral a {
+            display: inline-block;
+            margin: 5px 0;
+            color: #101010;
+        }
+
+        #menuLateral img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .aviso {
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .assinatura {
+            text-align: left;
+        }
+
+      
+        .container-acoes-topo {
+            position: absolute;
+            top: 145px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+
+        #botaoMusicaInterativa,
+        #botaoQuiz,
+        .botao-feedback {
+            padding: 10px 16px;
+            background: var(--btn-bg);
+            color: var(--btn-color);
+            border: 1px solid #D3AF37;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            line-height: 1;
+            transition: all 0.2s ease;
+            height: 42px;
+        }
+
+        #botaoMusicaInterativa:hover,
+        #botaoQuiz:hover,
+        .botao-feedback:hover {
+            background: #D3AF37;
+            color: black;
+        }
+
+       
+        .toggle-cont {
+            --primary: #54a8fc;
+            --light: #d9d9d9;
+            --dark: #121212;
+            --gray: #414344;
+
+            position: relative;
+            z-index: 10;
+            width: fit-content;
+            height: 42px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-cont .toggle-input {
+            display: none;
+        }
+
+        .toggle-cont .toggle-label {
+            --gap: 5px;
+            --width: 32px;
+
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 4px;
+            width: calc((var(--width) + var(--gap)) * 2);
+            height: 100%;
+            background-color: var(--dark);
+            border: 1px solid #777777;
+            border-bottom: 0;
+            border-radius: 9999px;
+            box-sizing: border-box;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .toggle-label::before {
+            content: "";
+            position: absolute;
+            z-index: -10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(100% + 0.6rem);
+            height: calc(100% + 0.6rem);
+            background-color: var(--gray);
+            border: 1px solid #777777;
+            border-bottom: 0;
+            border-radius: 9999px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .toggle-label::after {
+            content: "";
+            position: absolute;
+            z-index: -10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(
+                circle at 50% -100%,
+                rgb(58, 155, 252) 0%,
+                rgba(12, 12, 12, 1) 80%
+            );
+            border-radius: 9999px;
+        }
+
+        .toggle-cont .toggle-label .cont-icon {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: var(--width);
+            height: var(--width);
+            background-image: radial-gradient(
+                circle at 50% 0%,
+                #666666 0%,
+                var(--gray) 100%
+            );
+            border: 1px solid #aaaaaa;
+            border-bottom: 0;
+            border-radius: 9999px;
+            box-shadow: inset 0 -0.15rem 0.15rem var(--primary);
+            transition: transform 0.3s ease-in-out;
+            overflow: clip;
+        }
+
+        .cont-icon .sparkle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: block;
+            width: calc(var(--width) * 1px);
+            aspect-ratio: 1;
+            background-color: var(--light);
+            border-radius: 50%;
+            transform-origin: 50% 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cont-icon .icon {
+            width: 0.9rem;
+            fill: var(--light);
+        }
+
+        .toggle-cont .toggle-input:checked + .toggle-label {
+            background-color: #41434400;
+            border: 1px solid #3d6970;
+            border-bottom: 0;
+        }
+
+        .toggle-cont .toggle-input:checked + .toggle-label .cont-icon {
+            overflow: visible;
+            background-image: radial-gradient(
+                circle at 50% 0%,
+                #045ab1 0%,
+                var(--primary) 100%
+            );
+            border: 1px solid var(--primary);
+            border-bottom: 0;
+            transform: translateX(calc((var(--gap) * 1) + 100%)) rotate(-225deg);
+        }
+
+       
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .janela-retro {
+            width: 90%;
+            max-width: 480px;
+            background: #181818;
+            border: 3px solid #D3AF37;
+            box-shadow: 0 0 15px rgba(211, 175, 55, 0.3);
+            font-family: 'Courier New', Courier, monospace;
+            color: #D3AF37;
+        }
+
+        .janela-topo {
+            background: #D3AF37;
+            color: #101010;
+            padding: 6px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .botao-fechar-modal {
+            background: #101010;
+            color: #D3AF37;
+            border: 1px solid #101010;
+            width: 22px;
+            height: 22px;
+            line-height: 18px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .botao-fechar-modal:hover {
+            background: #cc0000;
+            color: white;
+        }
+
+        .janela-corpo {
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .janela-conteudo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .janela-icone {
+            font-size: 38px;
+        }
+
+        .janela-texto {
+            text-align: left;
+        }
+
+        #letraOriginal {
+            font-size: 14px;
+            font-weight: bold;
+            color: #D3AF37;
+            margin-bottom: 6px;
+        }
+
+        #letraTraduzida {
+            font-size: 12px;
+            color: #b0b0b0;
+        }
+
+        .janela-botoes {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-retro {
+            background: #101010;
+            color: #D3AF37;
+            border: 2px solid #D3AF37;
+            padding: 8px 24px;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px #D3AF37;
+            transition: all 0.1s ease;
+        }
+
+        .btn-retro:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px #D3AF37;
+        }
+
+        .btn-retro:hover {
+            background: #D3AF37;
+            color: #101010;
+        }
+
+       
+        .quiz-opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .quiz-btn-opcao {
+            background: #101010;
+            color: #D3AF37;
+            border: 1px solid #D3AF37;
+            padding: 10px;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .quiz-btn-opcao:hover {
+            background: #D3AF37;
+            color: #101010;
+        }
+
+        .secao-engenharia {
+            position: relative;  
+            text-align: center;
+            padding: 50px 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: Arial, sans-serif;
+        }
+
+        .subtitulo-topo {
+            display: block;
+            color: #D3AF37;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .titulo-marca {
+            margin: 0;
+            color: #D3AF37;
+            font-size: 48px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .titulo-principal {
+            margin: 5px 0 15px 0;
+            color: var(--text-color);
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .turma {
+            display: block;
+            color: #D3AF37;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+        }
+
+        .membros-grupo {
+            max-width: 550px;
+            margin: 0 auto;
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .imagem-topo-direita {
+            position: absolute;
+            right: 30px; 
+            top: 20px;   
+            width: 550px; 
+            height: auto;
+            opacity: 0.9;
+            pointer-events: none; 
+        }
+
+        .linha-tempo {
+            position: relative;
+            max-width: 900px;
+            margin: 40px auto;
+            padding-left: 50px;
+        }
+
+        .linha-tempo::before {
+            content: '';
+            position: absolute;
+            left: 20px; 
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background-color: #D3AF37; 
+            z-index: 1;
+        }
+
+        .item-timeline {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 80px;
+        }
+
+        .circulo-numero {
+            position: absolute;
+            left: -50px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--bg-color);
+            border: 2px solid #D3AF37; 
+            border-radius: 50%;
+            color: #D3AF37;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .conteudo-timeline {
+            padding-left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .polaroid {
+            background: var(--card-bg);
+            padding: 10px 10px 25px 10px;
+            width: 220px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-align: center;
+            color: var(--card-text);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 13px;
+            transform: rotate(-2deg);
+            flex-shrink: 0;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .texto-bloco {
+            max-width: 450px;
+            text-align: left;
+        }
+
+        .texto-bloco h3 {
+            color: #D3AF37;
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-family: Arial, sans-serif;
+        }
+
+        .texto-bloco p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.5;
+            font-family: Arial, sans-serif;
+        }
+
+        .imagem-topo-esquerda {
+            position: absolute;
+            left: 20px;            
+            top: 300px;          
+            width: 560px;          
+            height: auto;
+            opacity: 0.9;
+            pointer-events: none;  
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="barra-links">
+        <a href="https://rollingstone.com.br/musica/rock-progressivo-origens-bandas/">Rock Progressivo</a>
+        <a href="https://www.instagram.com/cafecombaseado/">Café Com Baseado</a>
+        <a href="https://www.masterclass.com/articles/classic-rock-guide">Rock Clássico</a>
+        <a href="https://www.teclacenter.com.br/blog/o-que-e-indie-rock-descubra-de-uma-vez-por-todas/">Rock Indie</a>
+        <a href="https://www.masterclass.com/articles/classic-rock-guide">Rock Psicodélico</a>
+        <a href="https://open.spotify.com/intl-pt/album/3b4E89rxzZQ9zkhgKpj8N4">Álbum do mês</a>
+        <a href="https://www.youtube.com/watch?v=-0MQXbcw-co&list=RD-0MQXbcw-co&start_radio=1">Música do mês</a>
+    </nav>
+
+    <header class="cabecalho">
+        <button type="button" class="botao-menu" onclick="abrirMenu()" aria-label="Abrir menu">☰</button>
+        <h1>ROCKEY™</h1>
+        <form class="barra-busca" action="https://www.google.com/search" method="get" target="_blank">
+            <input type="search" name="q" placeholder="Buscar bandas e álbuns..." aria-label="Buscar no Google" required>
+            <button type="submit">Buscar 🔎</button>
+        </form>
+    </header>
+
+    <div class="container-acoes-topo">
+        <button type="button" id="botaoMusicaInterativa" onclick="iniciarMusicaInterativa()">
+            ♫ Música Interativa
+        </button>
+        
+        <!-- NOVO BOTÃO DE QUIZ -->
+        <button type="button" id="botaoQuiz" onclick="iniciarQuiz()">
+            🧠 Quiz do Rock
+        </button>
+
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeGOqwAeT_i1AABECLaKJE3K1WbbPrRdON3bOhBpo1xzXC16A/viewform?usp=publish-editor" target="_blank" class="botao-feedback">
+            💬 Deixar Feedback!!
+        </a>
+       <a href="biografia3.html" class="botao-feedback">
+    📖 Nossa Biografia
+</a>
+
+       
+        <div class="toggle-cont">
+            <input class="toggle-input" id="toggleTema" type="checkbox" onchange="alternarTema()">
+            <label class="toggle-label" for="toggleTema">
+                <div class="cont-icon">
+                    <span class="sparkle" style="--deg: 45; --duration: 2;"></span>
+                    <span class="sparkle" style="--deg: 135; --duration: 1.5;"></span>
+                    <span class="sparkle" style="--deg: 225; --duration: 2.5;"></span>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+                    </svg>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <section class="secao-engenharia">
+        <img src="jimmy.png" class="imagem-topo-esquerda" alt="Jimi Hendrix">
+        <span class="subtitulo-topo">PROJETO TÉCNICO • FUZZ • REVERB</span>
+        <h2 class="titulo-marca">HAYDÉE 2026</h2>  
+        <h3 class="titulo-principal">A ENGENHARIA DO ROCK!</h3>
+        <span class="turma">SOMOS 3 0 1 INFORMÁTICA!</span>
+        <p class="membros-grupo"> 
+            ANDRÉ; DANIEL; KHAUAN; RYAN PAIVA; SAMUEL MARTINS; WENDER LUCAS
+        </p>
+        <img src="avatares/fuzzyy.png" class="imagem-topo-direita">
+    </section>
+
+    <div class="linha-tempo">
+        <div class="item-timeline">
+            <div class="circulo-numero">01</div>
+            <div class="conteudo-timeline">
+                <div class="polaroid">
+                    <img src="avatares/fuzzz.png" alt="Fuzz Face">
+                    Fuzz Face (1966)
+                </div>
+                <div class="texto-bloco">
+                    <h3>O FUZZ</h3>
+                    <p>O fuzz é um dos primeiros efeitos de distorção para guitarra elétrica. O Fuzz Face, lançado em 1966, foi um dos mais influentes e até hoje é referência no som do rock.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="item-timeline">
+            <div class="circulo-numero">02</div>
+            <div class="conteudo-timeline">
+                <div class="polaroid">
+                    <img src="avatares/s-l1200.webp" alt="Reverb anos 60">
+                    Reverb (anos 60)
+                </div>
+                <div class="texto-bloco">
+                    <h3>O REVERB</h3>
+                    <p>O reverb começou a ser usado em estúdios nos anos 60, com sistemas de mola e, depois, digitais. Ele simula o som do ambiente, trazendo profundidade e espaço para a música.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="item-timeline">
+            <div class="circulo-numero">03</div>
+            <div class="conteudo-timeline">
+                <div class="polaroid">
+                    <img src="avatares/unnamed (1).jpg" alt="Desenvolvendo o projeto">
+                    Desenvolvendo o projeto
+                </div>
+                <div class="texto-bloco">
+                    <h3>OS ALUNOS EM AÇÃO</h3>
+                    <p>Os alunos desenvolveram uma belíssima e organizada apresentação, pensada por dias em que fora construídos um fuzz e um reverb totalmente feito à mão,
+                       testando os efeitos e entendendo como a eletrônica se conecta diretamente com a música.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <div id="popupMusica" class="modal-overlay">
+        <div class="janela-retro">
+            <div class="janela-topo">
+                <span>♫ NO OTHER HEART/MAC DEMARCO</span>
+                <button type="button" class="botao-fechar-modal" onclick="fecharMusica()">✕</button>
+            </div>
+
+            <div class="janela-corpo">
+                <div class="janela-conteudo">
+                    <span class="janela-icone">🎧</span>
+                    <div class="janela-texto">
+                        <div id="letraOriginal"></div>
+                        <div id="letraTraduzida"></div>
+                    </div>
+                </div>
+ 
+                <div class="janela-botoes">
+                    <button type="button" class="btn-retro" onclick="proximoTrecho()">OK</button>
+                    <button type="button" class="btn-retro" onclick="fecharMusica()">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="popupQuiz" class="modal-overlay">
+        <div class="janela-retro">
+            <div class="janela-topo">
+                <span id="tituloQuizTopo">🧠 QUIZ DO ROCK (1/7)</span>
+                <button type="button" class="botao-fechar-modal" onclick="fecharQuiz()">✕</button>
+            </div>
+
+            <div class="janela-corpo">
+                <div class="janela-texto" style="width: 100%;">
+                    <p id="perguntaTexto" style="font-weight: bold; color: #D3AF37; margin-bottom: 15px;"></p>
+                    <div id="opcoesContainer" class="quiz-opcoes"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <aside id="menuLateral">
+        <button type="button" class="botao-fechar" onclick="fecharMenu()" aria-label="Fechar menu">✕</button>
+        <h2>🏠 Menu do Site!</h2>
+        <hr>
+
+        <h3>☆ Sobre CB e Rock ☆</h3>
+        <a href="biografia.html">sobre os alunos envolvidos no projeto</a><br>
+        <a href="https://www.letras.mus.br/blog/tame-impala-biografia/">Conheça Tame Impala</a><br>
+        <a href="https://medium.com/@carmenliquor/nirvana-uma-breve-biografia-b27f681e24dc/">Conheça Nirvana</a><br>
+        <a href="https://www.acdc.com/">Conheça AC/DC ϟ</a><br>
+        <a href="https://www.letras.mus.br/blog/historia-pink-floyd/">Pink Floyd</a>
+
+        <h3>Recomendados</h3>
+        <a href="https://www.cifraclub.com.br/" style="color: orange;">Cifra Club</a><br>
+        <a href="https://www.letras.mus.br/" style="color: rgb(184, 187, 0);">Letras</a>
+
+        <h3>Just Rick Astley</h3>
+        <p><img src="rick.gif.html" width="180" alt="Rick Astley dançando"></p>
+
+        <h3>Música Secreta!</h3>
+        <a href="https://www.youtube.com/watch?v=gSJeHDlhYls" style="color: green;">TODAS AS LETRAS MAIÚSCULAS</a>
+
+        <h3>AVISO DO ADM.</h3>
+        <p>Caro leitor,</p>
+        <p class="aviso">
+            Este site foi desenvolvido com a finalidade de mostrar
+            aos usuários como nosso projeto próprio de criação de um 
+            fuzz e reverb foi pensado, como surgiu e como será mostrado ao público. 
+            Sinta-se à vontade em interagir com a música interativa e nosso quiz, que te recompensará genuinamente!
+        </p>
+        <h6 class="assinatura">Faça um bom uso, por W E N D E R  L U C A S.</h6>
+        <h6 class="texto-direita"> 
+            <a href="biografia.html" style="color: rgb(202, 202, 202);">secreto</a>
+        </h6>
+    </aside>
+
+    <script>
+        function abrirMenu() {
+            document.getElementById("menuLateral").classList.add("aberto");
+        }
+
+        function fecharMenu() {
+            document.getElementById("menuLateral").classList.remove("aberto");
+        }
+
+        
+        function alternarTema() {
+            document.body.classList.toggle("light-theme");
+        }
+
+        let trechoAtual = 0;
+
+        const trechosMusica = [
+            { original: "Is it true?", traducao: "É VERDADE?" },
+            { original: "You've been feelin' sort of low these days", traducao: "Você tem se sentido meio para baixo esses dias" },
+            { original: "Just don't have a place to go these days", traducao: "Só não tenho um lugar para ir hoje em dia" },
+            { original: "Must be bringin' you down", traducao: "Deve estar te deixando para baixo" },
+            { original: "if it's so", traducao: "se é assim" },
+            { original: "then come on, give this loverboy a try", traducao: "então vamos lá, dê uma chance para esse apaixonado tentar" },
+            { original: "i'll put the sparkle right back in your eyes", traducao: "vou colocar o brilho de volta nos seus olhos" },
+            { original: "what could you lose?", traducao: "o que você poderia perder?" },
+            { original: "Well, for one, her heart belongs to another", traducao: "Bem, por um lado, o coração dela pertence a outro" },
+            { original: "And no other heart will do", traducao: "E nenhum outro coração servirá" },
+            { original: "Is it wrong", traducao: "Está errado" },
+            { original: "To think my love could really help you out?", traducao: "Pensar que meu amor poderia realmente te ajudar?" },
+            { original: "It's simply just my stubborn heart, no doubt", traducao: "É simplesmente meu coração teimoso, sem dúvida" },
+            { original: "Rambling away", traducao: "Divagando" },
+            { original: "If it's not", traducao: "Se não for" },
+            { original: "Then come on, give this loverboy a try", traducao: "Então vamos lá, dê uma chance a esse amante" },
+            { original: "I'll put the sparkle right back in your eyes", traducao: "Vou colocar o brilho de volta em seus olhos" },
+            { original: "What could you lose?", traducao: "O que você poderia perder?" },
+            { original: "Well, for one, her heart belongs to another", traducao: "Bem, por um lado, o coração dela pertence a outro" },
+            { original: "And no other heart will do", traducao: "E nenhum outro coração servirá" },
+            { original: "For one, her heart belongs to another", traducao: "Por um lado, o coração dela pertence a outro" },
+            { original: "And no other heart will do", traducao: "E nenhum outro coração servirá" },
+            { original: "...", traducao: "Fim da música" }
+        ];
+
+        function iniciarMusicaInterativa() {
+            trechoAtual = 0;
+            document.getElementById("popupMusica").style.display = "flex";
+            mostrarTrecho();
+        }
+
+        function mostrarTrecho() {
+            const original = document.getElementById("letraOriginal");
+            const traducao = document.getElementById("letraTraduzida");
+
+            original.textContent = trechosMusica[trechoAtual].original;
+            traducao.textContent = trechosMusica[trechoAtual].traducao || "";
+        }
+
+        function proximoTrecho() {
+            trechoAtual++;
+
+            if (trechoAtual >= trechosMusica.length) {
+                fecharMusica();
+                return;
+            }
+
+            mostrarTrecho();
+        }
+
+        function fecharMusica() {
+            document.getElementById("popupMusica").style.display = "none";
+        }
+
+     
+        const perguntasQuiz = [
+            {
+                pergunta: "1. Em que ano foi lançado o lendário pedal de efeito Fuzz Face?",
+                opcoes: ["A) 1954", "B) 1966", "C) 1975", "D) 1982"],
+                correta: 1
+            },
+            {
+                pergunta: "2. Qual efeito simula a acústica de um ambiente real e espaço físico?",
+                opcoes: ["A) Chorus", "B) Delay", "C) Reverb", "D) Distortion"],
+                correta: 2
+            },
+            {
+                pergunta: "3. Qual destas bandas NÃO é citada no menu de recomendações do site?",
+                opcoes: ["A) Engenheiros do Havaí", "B) Nirvana", "C) Pink Floyd", "D) AC/DC"],
+                correta: 0
+            },
+            {
+                pergunta: "4. Qual é a turma responsável pelo projeto técnico Haydée 2026?",
+                opcoes: ["A) 301 Informática", "B) 202 Logística", "C) 302 Informática", "D) 101 Segurança"],
+                correta: 0
+            },
+            {
+                pergunta: "5. Qual o nome do artista que canta a música interativa do pop-up?",
+                opcoes: ["A) Tame Impala", "B) Mac DeMarco", "C) Jimi Hendrix", "D) Rick Astley"],
+                correta: 1
+            },
+            {
+                pergunta: "6. O reverb clásssico, em sua composição utiliza um sistema de:",
+                opcoes: ["A) vácuo", "B) molas", "C) eletronegatividade", "D) metal fundido"],
+                correta: 1
+            },
+            {
+                pergunta: "7. Onde está localizado o link 'TODAS AS LETRAS MAIÚSCULAS' de biografia dentro do site?",
+                opcoes: ["A) No cabeçalho principal", "B) No menu lateral", "C) Na barra de links do topo", "D) Na barra de pesquisa do Google"],
+                correta: 1
+            }
+        ];
+
+        let perguntaAtual = 0;
+        let pontuacao = 0;
+
+        function iniciarQuiz() {
+            perguntaAtual = 0;
+            pontuacao = 0;
+            document.getElementById("popupQuiz").style.display = "flex";
+            carregarPergunta();
+        }
+
+        function carregarPergunta() {
+            const q = perguntasQuiz[perguntaAtual];
+            document.getElementById("tituloQuizTopo").textContent = `🧠 QUIZ DO ROCK (${perguntaAtual + 1}/7)`;
+            document.getElementById("perguntaTexto").textContent = q.pergunta;
+
+            const container = document.getElementById("opcoesContainer");
+            container.innerHTML = "";
+
+            q.opcoes.forEach((opcao, index) => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "quiz-btn-opcao";
+                btn.textContent = opcao;
+                btn.onclick = () => responderQuiz(index);
+                container.appendChild(btn);
+            });
+        }
+
+        function responderQuiz(indiceEscolhido) {
+            const q = perguntasQuiz[perguntaAtual];
+            if (indiceEscolhido === q.correta) {
+                pontuacao++;
+            }
+
+            perguntaAtual++;
+
+            if (perguntaAtual < perguntasQuiz.length) {
+                carregarPergunta();
+            } else {
+                mostrarResultadoQuiz();
+            }
+        }
+
+        function mostrarResultadoQuiz() {
+            document.getElementById("tituloQuizTopo").textContent = "🏆 RESULTADO FINAL";
+            document.getElementById("perguntaTexto").innerHTML = `Parabéns por completar o quiz, você FAZ PARTE DO ROCK!<br><br>Você acertou <span style="color: #fff; font-size: 18px;">${pontuacao}</span> de <span style="color: #fff; font-size: 18px;">7</span> perguntas!`;
+            
+            const container = document.getElementById("opcoesContainer");
+            container.innerHTML = `<button type="button" class="btn-retro" style="width: 100%; text-align: center;" onclick="fecharQuiz()">FECHAR</button>`;
+        }
+
+        function fecharQuiz() {
+            document.getElementById("popupQuiz").style.display = "none";
+        }
+    </script>
+</body>
+</html>
